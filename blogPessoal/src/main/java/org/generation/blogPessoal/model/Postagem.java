@@ -1,5 +1,5 @@
 package org.generation.blogPessoal.model;
-
+//tudo que será mandado para o banco de dados
 import java.util.Date;
 
 import javax.persistence.Entity;
