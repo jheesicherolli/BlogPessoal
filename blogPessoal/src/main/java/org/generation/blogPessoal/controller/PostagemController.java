@@ -3,6 +3,8 @@ package org.generation.blogPessoal.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.generation.blogPessoal.model.Postagem;
 import org.generation.blogPessoal.repository.PostagemRepository;
 
@@ -84,12 +86,15 @@ public class PostagemController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Postagem> atualizarPostagem(@RequestBody Postagem postagem){
+	public ResponseEntity<Postagem> atualizarPostagem(@Valid @RequestBody Postagem postagem){
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem));
 	}
 	
 	@DeleteMapping("/{d}")
-	public void delete(@PathVariable long id){
+	public void delete(@PathVariable long id)
+	// já que é void e não vamos retornar nada não usamos o return
+	{
 		repository.deleteById(id);
 	}
+	
 }
