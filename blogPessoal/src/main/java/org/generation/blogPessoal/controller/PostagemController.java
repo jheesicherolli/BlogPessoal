@@ -71,14 +71,14 @@ public class PostagemController {
 	/*recebe duas barras para não confundir o backend,resultando em uma duplicidade de endpoint, 
 	pois a API entende que depois de uma barra vem o último dado*/
 	
-	public ResponseEntity<List<Postagem>> GetByTitulo(@PathVariable String titulo){
+	public ResponseEntity <List<Postagem>> GetByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
 		//retornar tudo que contém em título ignorando se é minúscula ou maiúscula.
 	}
 
 	
 	@PostMapping
-	public ResponseEntity<Postagem> adicionaPostagem(@RequestBody Postagem postagem)
+	public ResponseEntity<Postagem> adicionaPostagem(@Valid @RequestBody Postagem postagem)
 	//RequestBory = corpo da requisição                                    //esse postagem é um objeto
 	{
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(postagem));
@@ -90,7 +90,7 @@ public class PostagemController {
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem));
 	}
 	
-	@DeleteMapping("/{d}")
+	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id)
 	// já que é void e não vamos retornar nada não usamos o return
 	{

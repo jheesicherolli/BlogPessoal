@@ -26,13 +26,15 @@ public class Tema {
 	
 	@OneToMany (mappedBy = "tema", cascade = CascadeType.ALL)
 	//está sendo mapeado o atributo tema da tabela de postagem
+	//CascadeType.REMOVE = indica que se uma categoria for atualizada, todos os produtos atrelados a ela vão ser removidos
 	
 	/*Cascade = caso alteremos algo referente ao tema, todas as postagens referentes 
-	 * aquele tema sofrerá ateração, ex: se deletar algum tema, todas as postagens referentes a aquele tema
+	 * aquele tema sofrerão ateração, ex: se deletar algum tema, todas as postagens referentes a aquele tema
 	 * também serão apagadas*/
 	@JsonIgnoreProperties("tema")
 	private List<Postagem> postagem;
-	
+	//listar todos os itens que estão na minha postagem, fazendo uma fusão dos dados
+
 	
 	public long getId() {
 		return id;

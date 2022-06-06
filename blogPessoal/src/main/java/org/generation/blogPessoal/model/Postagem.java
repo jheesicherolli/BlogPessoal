@@ -39,7 +39,9 @@ public class Postagem {
 	private Date data = new java.sql.Date(System.currentTimeMillis());
 	
 	@ManyToOne
+	@NotNull
 	@JsonIgnoreProperties("postagem")
+	//postagem recebe a chave estrangeira, não existe sem o tema
 	private Tema tema;
 	
 
