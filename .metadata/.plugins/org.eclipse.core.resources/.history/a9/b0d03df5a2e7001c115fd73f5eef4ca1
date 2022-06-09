@@ -1,0 +1,34 @@
+package org.generation.blogPessoal.service;
+
+import java.util.Optional;
+
+import org.generation.blogPessoal.model.UserLogin;
+import org.generation.blogPessoal.model.Usuario;
+import org.generation.blogPessoal.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UsuarioService {
+
+	@Autowired
+	private UsuarioRepository repository;
+	
+	public Usuario CadastrarUsuario(Usuario usuario) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		String senhaEncoder = encoder.encode(usuario.getSenha());
+		usuario.setSenha(senhaEncoder);
+		//encripta a senha 
+		
+		return repository.save(usuario);
+		//salvaremos o objeto usuario já com a senha modificada
+		
+	}
+	
+	public Optional<UserLogin> Logar(Optinal<UserLogin> user){
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		Optional<Usuario> usuario
+	}
+}
