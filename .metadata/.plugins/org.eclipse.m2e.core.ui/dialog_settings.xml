@@ -2,6 +2,10 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\jenni\Documents\Generation\Bloco2\BlogTest\blogpessoal_2022-09_JUnit_Update"/>
+			<item value="C:\Users\jenni\Documents\Generation\Bloco2\BlogTest"/>
+			<item value="C:\Users\jenni\Documents\Generation\Bloco2\BlogPessoal\blogPessoal\src\test"/>
+			<item value="C:\Users\jenni\Documents\Generation\ProjetoSustenta+\SustentaMais"/>
 			<item value="C:\Users\jenni\Documents\Generation\ProjetoSustenta+\SustentaMais\SustentaMais"/>
 			<item value="C:\Users\jenni\Documents\Generation\Bloco2\LojaDeGames\lojadegames"/>
 			<item value="C:\Users\jenni\Documents\Generation\Bloco2\Farmacia\farmacia"/>
@@ -10,9 +14,9 @@
 			<item value="C:\Users\jenni\Documents\Generation\Bloco2\BlogPessoal\blogPessoal"/>
 		</list>
 		<list key="projectNameTemplate">
+			<item value="[artifactId]-[version]"/>
 			<item value="[artifactId]"/>
 			<item value="[artifactId]-TRUNK"/>
-			<item value="[artifactId]-[version]"/>
 			<item value="[groupId].[artifactId]"/>
 			<item value="[groupId].[artifactId]-[version]"/>
 			<item value="[name]"/>

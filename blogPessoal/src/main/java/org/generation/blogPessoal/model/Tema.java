@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -19,12 +19,12 @@ public class Tema {
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
-	@NotNull
+	@NotBlank(message = "O atributo Descrição é obrigatório e não pode conter espaços em branco")
 	private String descricao;
 	
-	@OneToMany (mappedBy = "tema", cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "tema", cascade = CascadeType.REMOVE)
 	//está sendo mapeado o atributo tema da tabela de postagem
 	//CascadeType.REMOVE = indica que se uma categoria for atualizada, todos os produtos atrelados a ela vão ser removidos
 	
@@ -34,12 +34,12 @@ public class Tema {
 	@JsonIgnoreProperties("tema")
 	private List<Postagem> postagem;
 	//listar todos os itens que estão na minha postagem, fazendo uma fusão dos dados
-
 	
-	public long getId() {
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getDescricao() {

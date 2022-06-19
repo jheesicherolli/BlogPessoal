@@ -1,0 +1,5 @@
+package com.sustentamais.sustentamais.model;
+
+public class UserModel {
+
+}

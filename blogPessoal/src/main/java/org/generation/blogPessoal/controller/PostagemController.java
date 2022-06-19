@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import org.generation.blogPessoal.model.Postagem;
 import org.generation.blogPessoal.repository.PostagemRepository;
-
+import org.generation.blogPessoal.repository.TemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +29,16 @@ import org.springframework.web.bind.annotation.RestController;
 //Mostra e define por qual URI a classe será acessada.
 // indica um endpoint
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*") 
 //aceita requisições de qualquer origem, ou seja permite que requisições de outras portas sejam aceitas na minha aplicação.
 public class PostagemController {
 
 	@Autowired
 	//funciona como injeção de dependência, transferindo a responsabilidade
 	private PostagemRepository repository;
+	
+	@Autowired
+	private TemaRepository temaRepository;
 	
 	@GetMapping
 	//GetMapping indica o verbo que pode ser utilizado no endpoint
@@ -44,7 +47,7 @@ public class PostagemController {
 	//DeleteMapping deleta 
 	//Mapping é para mapear essa função
 	
-	public ResponseEntity<List<Postagem>> GetAll()
+	public ResponseEntity<List<Postagem>> getAll()
 	//GetAll é só um nome que dou para minha fnução buscar meus dados, poderia buscaPostagem
 	//list serve para pegar uma postagem ou uma lista de postagem
 	{
@@ -54,7 +57,7 @@ public class PostagemController {
 	
 
 	@GetMapping("/{id}") //é um caminho específico de pesquisa
-	public ResponseEntity<Postagem> GetById(@PathVariable Long id)/*@PathVariable = prepara pra receber um valor da minha variável, no caso do ID na minha URI(URL)*/
+	public ResponseEntity<Postagem> getById(@PathVariable Long id)/*@PathVariable = prepara pra receber um valor da minha variável, no caso do ID na minha URI(URL)*/
 	/*ResponseEntity: significa representar toda a resposta HTTP*/
 	{
 		return repository.findById(id)
@@ -81,20 +84,38 @@ public class PostagemController {
 	public ResponseEntity<Postagem> adicionaPostagem(@Valid @RequestBody Postagem postagem)
 	//RequestBory = corpo da requisição                                    //esse postagem é um objeto
 	{
+		if (temaRepository.existsById(postagem.getTema().getId()))
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(postagem));
 		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
 	}
 	
 	@PutMapping
 	public ResponseEntity<Postagem> atualizarPostagem(@Valid @RequestBody Postagem postagem){
+		
+		if (repository.existsById(postagem.getId())){
+		
+			if (temaRepository.existsById(postagem.getTema().getId()))
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem));
+			
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable long id)
-	// já que é void e não vamos retornar nada não usamos o return
+	public ResponseEntity <?> deletePostagem(@PathVariable Long id)
+	// quando é void e não deve retornar nada, por isso não é usado o return
 	{
-		repository.deleteById(id);
+		return repository.findById(id)
+				.map(resposta -> {
+					repository.deleteById(id);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				})
+				.orElse(ResponseEntity.notFound().build());
 	}
 	
 }

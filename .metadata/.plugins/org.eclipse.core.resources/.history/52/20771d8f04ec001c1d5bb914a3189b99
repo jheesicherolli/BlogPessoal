@@ -1,0 +1,45 @@
+package org.generation.blogPessoal.repository;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@SpringBootTest(webEnvironment = WebEnvironment.RAMD)
+/*indica que é uma classe de SpringBootTest, 
+ * caso a porta 8080 esteja sendo ocupada ele cria outra porta de entrada automaticamente
+ */
+@TestInstance(TestInstance)
+//indica que tem apenas um único ciclo de vida, após a execução ela é quebrada, pra depois poder ser construída de novo
+public class UsuarioRepositoryTest {
+
+}
+  @Autowired
+  private UsuarioRepository usuarioRepository;
+  
+  @BeforeAll
+  public void start() {
+	  usuarioRepository.deleteAll();
+	  usuarioRepository.save(new Usuario(0L,"Jõao da Silva"))
+  }
+  
+  @Test
+  @DisplayName("Retorna 1 usuário")
+  public void deveRetornaUmUsuario() {
+	  Optional<Usuario> usuario = usuarioRepository.findByUsuario
+			  assestTrue(usuario.get().getUsuario().equals("joao@gmail.com"))
+			  //assertTrue = retorna a verificação do usuario, se for retornado volta true, se não volta com false
+  }
+  
+  @Test
+  @DisplayName("Retorna 3 usuários")
+  public void deveRetornarTresUsuarios() {
+	  List<Usuario> listaDeUsuarios = usuarioRepository.findAllByNomeContaningIgnoreCase("Silva")
+      assertEquals(3,listaDeUsuarios.size()); //verifica o tamanho da lista, no exemplo é 3.
+	  //size retorna o tamanho da lista
+	  assertTrue(listaDeUsuarios.get(0).getNome().equals("João da Silva"));
+	  assertTrue(listaDeUsuarios.get(1).getNome().equals("Manuela da Silva"));
+	  assertTrue(listaDeUsuarios.get(2).getNome().equals("Adriana da Silva"));
+
+
+  }

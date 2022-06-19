@@ -1,0 +1,55 @@
+package org.generation.blogPessoal.controller;
+
+import org.generation.blogPessoal.model.Usuario;
+import org.generation.blogPessoal.service.UsuarioService;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+@SpringBootTest(webEnvironment = WebEnvironment.RAMDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.Orde)
+//determina a ordem da minha execução/programação
+		public class UsuarioControllerTest {
+
+	@Autowired
+	private TestRestTemplate testRestTemplate;
+
+	@Autowired
+	private UsuarioService usuarioService;
+
+}
+
+@BeforeAll
+void start() {
+	usuarioRepository.deleteAll();
+}
+
+@Test
+@Order(1)
+@DisplayName("Cadastrar um Usuário")
+public void deveCriarUmUsuario() {
+	HttpEntity<Usuario> requisicao = new HttpEntity<Usuario>(new Usuario(
+			0L,"PauloAntunes","paulo@gmail.com","12345678"));
+	ResponseEntity<Usuario> resposta = testRestTemplate.exchange("/usuarios/cadastrar",HttpMethod.POST,requisicao,Usuario.class);
+	assertEquals(HttpStatus.CREATED,resposta.getStatusCode());
+	assertEquals(requisicao.getBody().getNome(),resposta.getBody().getNome());
+	assertEquals(requisicao.getBody().getFoto(),resposta.getBody().getFoto());
+	assertEquals(requisicao.getBody().getUsuario(),resposta.getBody().getUsuario());
+
+}
+
+@Test
+@Order(2)
+@DisplayName("Não deve permitir duplicação do Usuário")
+public void deveDuplicarUsuario() {
+	
+	usuarioService.CadastrarUsuario(new Usuario(0L
+    HttpEntity<Usuario>requisicao = new HttpEntity<Usuario> (new Usuario(0L,"Maria Da Silva", "foto link","maria@gmail.com", "senha"))
+    ResponseEntity<Usuario>resposta = testRestTemplate
+            .exchange("/usuarios/cadastrar",HttpMethod.POST,requisicao
+    assetEquals(HttpStatus.BAD_REQUEST,resposta.getStatusCode());
+}
+
+}

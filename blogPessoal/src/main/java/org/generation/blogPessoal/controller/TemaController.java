@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin (origins = "*", allowedHeaders = "*")
 @RequestMapping("/tema")
+@CrossOrigin (origins = "*", allowedHeaders = "*")
 public class TemaController {
 
 	@Autowired
@@ -34,15 +34,15 @@ public class TemaController {
 	}
 		
 	@GetMapping("/{id}")
-	public ResponseEntity<Tema> getById(@PathVariable long id) {
+	public ResponseEntity<Tema> getById(@PathVariable Long id) {
 		return repository.findById(id)
 				.map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<Tema>> getByName(@PathVariable String nome) {
-		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
+	@GetMapping("/descricao/{decricao}")
+	public ResponseEntity<List<Tema>> getByDescricao(@PathVariable String descricao) {
+		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(descricao));
 	}
 	
 	@PostMapping
@@ -53,12 +53,25 @@ public class TemaController {
 	
 	@PutMapping
 	public ResponseEntity<Tema> atualizarTema (@Valid @RequestBody Tema tema) {
-		return ResponseEntity.ok(repository.save(tema));
+		
+		return repository.findById(tema.getId())
+				.map(resposta -> {
+					return ResponseEntity.ok().body(repository.save(tema));
+
+				})
+				.orElse(ResponseEntity.notFound().build());
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable long id) {
-		repository.deleteById(id);
+	public ResponseEntity <?> delete(@PathVariable Long id) {
+		
+		return repository.findById(id)
+				.map(resposta -> {
+				repository.deleteById(id);
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+				})
+				.orElse(ResponseEntity.notFound().build());
 	}
 	
 }
